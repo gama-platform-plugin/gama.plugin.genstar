@@ -4,10 +4,10 @@ Bundle-Name: Genstar
 Bundle-SymbolicName: gama.plugin.genstar;singleton:=true
 Bundle-Version: 2025.6.0.qualifier
 Automatic-Module-Name: espacedev.gaml.extensions.genstar
-Bundle-RequiredExecutionEnvironment: JavaSE-21
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Require-Bundle: com.google.guava;bundle-version="30.1.0",
- gama.dependencies,
- gama.core;bundle-version="0.0.0"
+ gama.dependencies,gama.core;bundle-version="0.0.0",gama.annotations,
+ gama.processor,gama.api
 Bundle-ClassPath: .,
  lib/jackson-annotations-2.13.2.jar,
  lib/jackson-core-2.13.2.jar,

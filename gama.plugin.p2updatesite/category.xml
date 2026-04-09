@@ -12,9 +12,9 @@
             gama.optional.formats      - New file format support (IFC, NetCDF, CIM...)
             gama.optional.ia           - Artificial intelligence components
     -->
-    <feature url="features/gama.plugin.feature.genstar_2025.6.0.qualifier.jar"
+    <feature url="features/gama.plugin.feature.genstar_2026.6.0.qualifier.jar"
              id="gama.plugin.feature.genstar"
-             version="2025.6.0.qualifier">
+             version="2026.6.0.qualifier">
         <category name="gama.optional"/>
     </feature>
 
