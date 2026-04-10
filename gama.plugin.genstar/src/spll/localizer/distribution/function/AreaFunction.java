@@ -10,7 +10,7 @@
  ********************************************************************************************************/
 package spll.localizer.distribution.function;
 
-import gama.core.metamodel.shape.IShape;
+import gama.api.types.geometry.IShape;
 
 /**
  * The Class AreaFunction.

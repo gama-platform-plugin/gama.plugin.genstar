@@ -2,10 +2,9 @@ package spll.localizer.pointInalgo;
 
 import java.util.List;
 
-
-import gama.core.metamodel.shape.GamaPoint;
-import gama.core.metamodel.shape.IShape;
-import gama.core.runtime.IScope;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.GamaPoint;
+import gama.api.types.geometry.IShape;
 
 public interface PointInLocalizer {
 

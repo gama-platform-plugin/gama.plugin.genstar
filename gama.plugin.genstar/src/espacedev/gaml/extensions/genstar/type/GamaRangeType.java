@@ -12,16 +12,17 @@ package espacedev.gaml.extensions.genstar.type;
 
 import java.util.Arrays;
 
-import gama.core.metamodel.shape.GamaPoint;
-import gama.annotations.precompiler.GamlAnnotations.doc;
-import gama.annotations.precompiler.GamlAnnotations.type;
-import gama.annotations.precompiler.IConcept;
-import gama.core.runtime.IScope;
-import gama.core.util.GamaList;
-import gama.core.util.GamaPair;
-import gama.gaml.operators.Cast;
-import gama.gaml.types.GamaType;
-import gama.gaml.types.IType;
+import gama.annotations.doc;
+import gama.annotations.type;
+import gama.annotations.support.IConcept;
+import gama.api.gaml.types.Cast;
+import gama.api.gaml.types.GamaType;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.ITypesManager;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.GamaPoint;
+import gama.api.types.list.GamaList;
+import gama.api.types.pair.GamaPair;
 
 /**
  * The Class GamaRangeType.
@@ -35,7 +36,9 @@ import gama.gaml.types.IType;
 public class GamaRangeType extends GamaType<GamaRange> {
 
 	/** The Constant id. */
-	public static final int RANGETYPE_ID = IType.AVAILABLE_TYPES + 3524246;
+	public static final int RANGETYPE_ID = IType.BEGINNING_OF_CUSTOM_TYPES + 3524246;
+
+	public GamaRangeType(final ITypesManager tm) { super(tm); }
 
 	@Override
 	public boolean canCastToConst() {
@@ -50,7 +53,7 @@ public class GamaRangeType extends GamaType<GamaRange> {
 	public GamaRange cast(final IScope scope, final Object obj, final Object param, final boolean copy) {
 		if (obj instanceof GamaRange gr) return gr;
 		if (obj instanceof GamaPoint p) return new GamaRange(p.x, p.y);
-		if (obj instanceof GamaPair p) return new GamaRange(Cast.asFloat(scope, p.key), Cast.asFloat(scope, p.value));
+		if (obj instanceof GamaPair p) return new GamaRange(Cast.asFloat(scope, p.key()), Cast.asFloat(scope, p.value()));
 		if (obj instanceof GamaList list) {
 			if (list.size() == 2)
 				return new GamaRange(Cast.asFloat(scope, list.get(0)), Cast.asFloat(scope, list.get(1)));

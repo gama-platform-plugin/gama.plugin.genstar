@@ -1,42 +1,41 @@
 package espacedev.gaml.extensions.genstar.statement;
 
-import static gama.annotations.precompiler.ISymbolKind.SEQUENCE_STATEMENT;
-
 import espacedev.gaml.extensions.genstar.localisation.IGenstarLinker;
 import espacedev.gaml.extensions.genstar.statement.SpatialLinkerStatement.LocaliseValidator;
 import espacedev.gaml.extensions.genstar.utils.GenStarConstant;
 import espacedev.gaml.extensions.genstar.utils.GenStarGamaUtils;
-import gama.core.metamodel.agent.IAgent;
-import gama.core.metamodel.shape.IShape;
-import gama.annotations.precompiler.GamlAnnotations.doc;
-import gama.annotations.precompiler.GamlAnnotations.example;
-import gama.annotations.precompiler.GamlAnnotations.facet;
-import gama.annotations.precompiler.GamlAnnotations.facets;
-import gama.annotations.precompiler.GamlAnnotations.inside;
-import gama.annotations.precompiler.GamlAnnotations.symbol;
-import gama.annotations.precompiler.GamlAnnotations.usage;
-import gama.annotations.precompiler.IConcept;
-import gama.annotations.precompiler.IOperatorCategory;
-import gama.annotations.precompiler.ISymbolKind;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.IList;
-import gama.gaml.compilation.IDescriptionValidator;
-import gama.gaml.compilation.annotations.validator;
-import gama.gaml.descriptions.IDescription;
-import gama.gaml.descriptions.StatementDescription;
-import gama.gaml.expressions.IExpression;
-import gama.gaml.operators.Cast;
-import gama.gaml.species.ISpecies;
-import gama.gaml.statements.AbstractStatementSequence;
-import gama.gaml.statements.Arguments;
-import gama.gaml.statements.IStatement.WithArgs;
+import gama.annotations.doc;
+import gama.annotations.example;
+import gama.annotations.facet;
+import gama.annotations.facets;
+import gama.annotations.inside;
+import gama.annotations.symbol;
+import gama.annotations.usage;
+import gama.annotations.support.IConcept;
+import gama.annotations.support.IOperatorCategory;
+import gama.annotations.support.ISymbolKind;
+import gama.api.annotations.validator;
+import gama.api.compilation.descriptions.IDescription;
+import gama.api.compilation.descriptions.IDescriptionValidator;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.expressions.IExpression;
+import gama.api.gaml.statements.AbstractStatementSequence;
+import gama.api.gaml.statements.IStatement.WithArgs;
+import gama.api.gaml.symbols.Arguments;
+import gama.api.gaml.types.Cast;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
+import gama.api.kernel.agent.IAgent;
+import gama.api.kernel.species.ISpecies;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.IShape;
+import gama.api.types.list.IList;
+import gama.api.compilation.descriptions.IStatementDescription;
 import gama.gaml.statements.RemoteSequence;
-import gama.gaml.types.IType;
 
 @symbol (
 		name = GenStarConstant.GSLINK,
-		kind = SEQUENCE_STATEMENT,
+		kind = ISymbolKind.SEQUENCE_STATEMENT,
 		with_sequence = true,
 		breakable = true,
 		continuable = true,
@@ -45,7 +44,7 @@ import gama.gaml.types.IType;
 		concept = { IConcept.AGENT_LOCATION, IConcept.SPECIES },
 		remote_context = true)
 @inside (
-		kinds = { ISymbolKind.BEHAVIOR,  SEQUENCE_STATEMENT })
+		kinds = { ISymbolKind.BEHAVIOR, ISymbolKind.SEQUENCE_STATEMENT })
 @facets (
 		value = { @facet (
 						name = GenStarConstant.ENTITIES,
@@ -138,7 +137,7 @@ public class SpatialLinkerStatement extends AbstractStatementSequence implements
 		if (valSpecies instanceof ISpecies) {
 			pop = (IList<IAgent>) ((ISpecies) valSpecies).getPopulation(scope);
 		} else {
-			pop = Cast.asList(scope, valSpecies);
+			pop = (IList<IAgent>) Types.LIST.cast(scope, valSpecies, null, false);
 		}
 		
 		IList<IShape> nest = null;
@@ -146,7 +145,7 @@ public class SpatialLinkerStatement extends AbstractStatementSequence implements
 		if (valNest instanceof ISpecies) {
 			nest = (IList<IShape>) ((ISpecies) valNest).getPopulation(scope);
 		} else {
-			nest = Cast.asList(scope, valNest);
+			nest = (IList<IShape>) Types.LIST.cast(scope, valNest, null, false);
 		}
 		
 		// TODO select among several localiser when they will be defined
@@ -172,10 +171,10 @@ public class SpatialLinkerStatement extends AbstractStatementSequence implements
 
 
 
-	public static class LocaliseValidator implements IDescriptionValidator<StatementDescription> {
+	public static class LocaliseValidator implements IDescriptionValidator<IStatementDescription> {
 
 		@Override
-		public void validate(StatementDescription description) {
+		public void validate(IStatementDescription description) {
 			
 			// ****** 
 			// Minimal check on species - not taking into account all the specific cases copy/past from CreateStatement 

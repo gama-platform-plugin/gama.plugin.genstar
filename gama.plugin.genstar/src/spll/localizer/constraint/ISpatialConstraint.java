@@ -1,9 +1,9 @@
 package spll.localizer.constraint;
 
-import gama.core.metamodel.shape.IShape;
-import gama.core.runtime.IScope;
-import gama.core.util.IContainer;
-import gama.core.util.IList;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.IShape;
+import gama.api.types.list.IList;
+import gama.api.types.misc.IContainer;
 
 /**
  * Represents a spatial constraint which might return the candidates compliant 

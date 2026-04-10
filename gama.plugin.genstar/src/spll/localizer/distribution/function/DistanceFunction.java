@@ -1,9 +1,9 @@
 package spll.localizer.distribution.function;
 
-import gama.core.metamodel.agent.IAgent;
-import gama.core.metamodel.shape.IShape;
-import gama.core.runtime.IScope;
-import gama.core.util.IList;
+import gama.api.kernel.agent.IAgent;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.IShape;
+import gama.api.types.list.IList;
 
 public class DistanceFunction implements ISpatialComplexFunction<Double> {
 

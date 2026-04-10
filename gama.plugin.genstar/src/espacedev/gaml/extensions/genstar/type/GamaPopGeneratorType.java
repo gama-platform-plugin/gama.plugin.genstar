@@ -11,12 +11,13 @@
 
 package espacedev.gaml.extensions.genstar.type;
 
-import gama.annotations.precompiler.GamlAnnotations.doc;
-import gama.annotations.precompiler.GamlAnnotations.type;
-import gama.annotations.precompiler.IConcept;
-import gama.annotations.precompiler.ISymbolKind;
-import gama.core.runtime.IScope;
-import gama.gaml.types.GamaType;
+import gama.annotations.doc;
+import gama.annotations.type;
+import gama.annotations.support.IConcept;
+import gama.annotations.support.ISymbolKind;
+import gama.api.gaml.types.GamaType;
+import gama.api.gaml.types.ITypesManager;
+import gama.api.runtime.scope.IScope;
 
 /**
  * The Class GamaPopGeneratorType.
@@ -25,23 +26,19 @@ import gama.gaml.types.GamaType;
 		name = GamaPopGeneratorType.GENERATORNAME,
 		id = 938373948,
 		wraps = { GamaPopGenerator.class },
-		kind = ISymbolKind.Variable.REGULAR,
+		kind = ISymbolKind.REGULAR,
 		concept = { IConcept.TYPE },
 		doc = { @doc ("Represents a population generator that can be used to create agents") })
 public class GamaPopGeneratorType extends GamaType<GamaPopGenerator> {
 
-	public static final String GENERATORNAME = "gen_population_generator"; 
-	
+	public static final String GENERATORNAME = "gen_population_generator";
+	public static final int GENERATOR_TYPE_ID = 938373948;
+
+	public GamaPopGeneratorType(final ITypesManager tm) { super(tm); }
+
 	@Override
 	public boolean canCastToConst() {
 		return true;
-	}
-
-	/**
-	 * Inits the.
-	 */
-	public void init() {
-		this.init(104, 938373948, "population_generator", GamaPopGenerator.class);
 	}
 
 	@Override

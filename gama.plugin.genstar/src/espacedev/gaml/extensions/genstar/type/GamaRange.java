@@ -13,15 +13,16 @@ package espacedev.gaml.extensions.genstar.type;
 import java.util.Random;
 
 import core.util.random.GenstarRandom;
-import gama.core.common.interfaces.IValue;
-import gama.annotations.precompiler.GamlAnnotations.doc;
-import gama.annotations.precompiler.GamlAnnotations.getter;
-import gama.annotations.precompiler.GamlAnnotations.variable;
-import gama.annotations.precompiler.GamlAnnotations.vars;
-import gama.core.runtime.IScope;
-import gama.core.util.file.json.Json;
-import gama.core.util.file.json.JsonValue;
-import gama.gaml.types.IType;
+import gama.annotations.doc;
+import gama.annotations.getter;
+import gama.annotations.variable;
+import gama.annotations.vars;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.misc.IValue;
+import gama.api.utils.json.IJson;
+import gama.api.utils.json.IJsonValue;
 
 /**
  * The Class GamaRange.
@@ -72,14 +73,18 @@ public class GamaRange implements IValue {
 	public Number getMax() { return max.doubleValue(); }
 
 	@Override
-	public JsonValue serializeToJson(Json json) {
-		// TODO Auto-generated method stub
+	public IJsonValue serializeToJson(final IJson json) {
 		return null;
 	}
 
 	@Override
+	public IType<?> getGamlType() {
+		return Types.get(GamaRangeType.RANGETYPE_ID);
+	}
+
+	@Override
 	public String stringValue(final IScope scope) {
-		return serializeToJson(Json.getNew()).asString();
+		return toString();
 	}
 
 	@Override

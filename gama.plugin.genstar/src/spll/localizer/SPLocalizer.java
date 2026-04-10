@@ -25,26 +25,27 @@ import java.util.stream.Stream;
 import org.apache.commons.math3.stat.regression.AbstractMultipleLinearRegression;
 import org.apache.commons.math3.stat.regression.GLSMultipleLinearRegression;
 import org.apache.commons.math3.stat.regression.OLSMultipleLinearRegression;
+import org.geotools.api.geometry.MismatchedDimensionException;
+import org.geotools.api.referencing.operation.TransformException;
 import org.geotools.feature.SchemaException;
-import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.operation.TransformException;
 
 import core.util.GSPerformanceUtil;
-import gama.core.metamodel.agent.IAgent;
-import gama.core.metamodel.shape.GamaPoint;
-import gama.core.metamodel.shape.IShape;
-import gama.core.runtime.IScope;
-import gama.core.util.GamaListFactory;
-import gama.core.util.GamaMapFactory;
-import gama.core.util.IContainer;
-import gama.core.util.IList;
+import gama.api.gaml.types.Cast;
+import gama.api.gaml.types.Types;
+import gama.api.kernel.agent.IAgent;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.GamaPoint;
+import gama.api.types.geometry.IShape;
+import gama.api.types.geometry.GamaPointFactory;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
+import gama.api.types.map.GamaMapFactory;
+import gama.api.types.misc.IContainer;
 import gama.core.util.matrix.GamaField;
-import gama.gaml.operators.Cast;
 import gama.gaml.operators.Containers;
 import gama.gaml.operators.spatial.SpatialOperators;
 import gama.gaml.operators.spatial.SpatialQueries;
 import gama.gaml.operators.spatial.SpatialTransformations;
-import gama.gaml.types.Types;
 import spll.localizer.constraint.ISpatialConstraint;
 import spll.localizer.constraint.SpatialConstraintLocalization;
 import spll.localizer.distribution.ISpatialDistribution;
@@ -264,7 +265,7 @@ public class SPLocalizer implements ISPLocalizer {
 		if (data == null) {
 			return;
 		}
-		GamaField field = fields.get(0).copy(scope, fields.get(0).getDimensions(), true);
+		GamaField field = (GamaField) fields.get(0).copy(scope, fields.get(0).getDimensions(), true);
 		field.setNoData(scope, -1.0);
 		field.setAllValues(scope, -1.0);
 		List<IList<Double>> possiblesValues = (List<IList<Double>>) data.get(2);
@@ -309,10 +310,10 @@ public class SPLocalizer implements ISPLocalizer {
 				double output = 0.0;
 				
 				IShape s = field.getCellShapeAt(scope, j, i);
-				//System.out.println("refObjects: " + refObjects.keySet());
-				//System.out.println("s: " + s.getLocation());
-				Integer index = refObjects.get(new GamaPoint(s.getLocation().x,s.getLocation().y));
-				if (index == null) {
+			//System.out.println("refObjects: " + refObjects.keySet());
+			//System.out.println("s: " + s.getLocation());
+			Integer index = refObjects.get(GamaPointFactory.create(s.getLocation().getX(),s.getLocation().getY(),Double.NaN));
+			if (index == null) {
 				//	System.out.println("i: " + i + " j: " + j);
 					continue;
 				}
@@ -329,7 +330,7 @@ public class SPLocalizer implements ISPLocalizer {
 					} else {
 						cellVals = f.getValuesIntersecting(scope, s);
 					}
-					GamaPoint spt = f.getCellSize(scope);
+					GamaPoint spt = (GamaPoint) f.getCellSize(scope);
 					double area = spt.x * spt.y;
 					
 					for (int l = 0; l < possibleVals.length(scope); l++) {
@@ -422,12 +423,12 @@ public class SPLocalizer implements ISPLocalizer {
 			int cpt = 0;
 			for (int j = 0; j < fs; j++) {  
 				GamaField field = fields.get(j);
-				GamaPoint spt = field.getCellSize(scope);
+				GamaPoint spt = (GamaPoint) field.getCellSize(scope);
 				double area = spt.x * spt.y;
 				if (j == 0) {
 					IList<IShape> cells = field.getCellsIntersecting(scope, s);
 					for (IShape c: cells) {
-						refObjects.put(new GamaPoint(c.getLocation().x, c.getLocation().y), i);
+						refObjects.put(GamaPointFactory.create(c.getLocation().getX(), c.getLocation().getY()), i);
 					}
 				}
 				List<Double> cellVals = field.getValuesIntersecting(scope, s);

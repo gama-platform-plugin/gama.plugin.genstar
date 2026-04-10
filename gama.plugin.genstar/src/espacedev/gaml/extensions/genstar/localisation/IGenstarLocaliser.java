@@ -11,9 +11,9 @@
 package espacedev.gaml.extensions.genstar.localisation;
 
 import espacedev.gaml.extensions.genstar.statement.LocaliseStatement;
-import gama.core.metamodel.agent.IAgent;
-import gama.core.runtime.IScope;
-import gama.core.util.IContainer;
+import gama.api.kernel.agent.IAgent;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.misc.IContainer;
 
 /**
  * Main interface to define new localisation process based on Genstar

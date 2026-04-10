@@ -17,39 +17,39 @@ import espacedev.gaml.extensions.genstar.generator.IGenstarGenerator;
 import espacedev.gaml.extensions.genstar.statement.GenerateStatement.GenerateValidator;
 import espacedev.gaml.extensions.genstar.utils.GenStarConstant;
 import espacedev.gaml.extensions.genstar.utils.GenStarGamaUtils;
-import gama.annotations.precompiler.GamlAnnotations.doc;
-import gama.annotations.precompiler.GamlAnnotations.example;
-import gama.annotations.precompiler.GamlAnnotations.facet;
-import gama.annotations.precompiler.GamlAnnotations.facets;
-import gama.annotations.precompiler.GamlAnnotations.inside;
-import gama.annotations.precompiler.GamlAnnotations.symbol;
-import gama.annotations.precompiler.GamlAnnotations.usage;
-import gama.annotations.precompiler.IConcept;
-import gama.annotations.precompiler.IOperatorCategory;
-import gama.annotations.precompiler.ISymbolKind;
-import gama.core.common.interfaces.IKeyword;
-import gama.core.metamodel.agent.IAgent;
-import gama.core.metamodel.population.IPopulation;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.GamaListFactory;
-import gama.core.util.IList;
-import gama.gaml.compilation.IDescriptionValidator;
-import gama.gaml.compilation.ISymbol;
-import gama.gaml.compilation.annotations.validator;
-import gama.gaml.descriptions.ExperimentDescription;
-import gama.gaml.descriptions.IDescription;
-import gama.gaml.descriptions.ModelDescription;
-import gama.gaml.descriptions.SpeciesDescription;
-import gama.gaml.descriptions.StatementDescription;
-import gama.gaml.expressions.IExpression;
-import gama.gaml.expressions.types.SpeciesConstantExpression;
-import gama.gaml.operators.Cast;
-import gama.gaml.statements.Arguments;
+import gama.annotations.doc;
+import gama.annotations.example;
+import gama.annotations.facet;
+import gama.annotations.facets;
+import gama.annotations.inside;
+import gama.annotations.symbol;
+import gama.annotations.usage;
+import gama.annotations.constants.IKeyword;
+import gama.annotations.support.IConcept;
+import gama.annotations.support.IOperatorCategory;
+import gama.annotations.support.ISymbolKind;
+import gama.api.annotations.validator;
+import gama.api.compilation.descriptions.IDescription;
+import gama.api.compilation.descriptions.IDescriptionValidator;
+import gama.api.compilation.descriptions.IExperimentDescription;
+import gama.api.compilation.descriptions.IModelDescription;
+import gama.api.compilation.descriptions.ISpeciesDescription;
+import gama.api.compilation.descriptions.IStatementDescription;
+import gama.api.compilation.descriptions.ITypeDescription;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.expressions.IExpression;
+import gama.api.gaml.symbols.Arguments;
+import gama.api.gaml.symbols.ISymbol;
+import gama.api.gaml.types.Cast;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
+import gama.api.kernel.agent.IAgent;
+import gama.api.kernel.agent.IPopulation;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
 import gama.gaml.statements.CreateStatement;
 import gama.gaml.statements.RemoteSequence;
-import gama.gaml.types.IType;
-import gama.gaml.types.Types;
 import one.util.streamex.StreamEx;
 
 /**
@@ -174,7 +174,7 @@ public class GenerateStatement extends CreateStatement {//extends AbstractStatem
 	public IList<? extends IAgent> privateExecuteIn(final IScope scope) throws GamaRuntimeException {
 		// First, we compute the number of agents to create
 		final Integer max = number == null ? null : Cast.asInt(scope, number.value(scope));
-		if (from == null && max != null && max <= 0) return GamaListFactory.EMPTY_LIST;
+		if (from == null && max != null && max <= 0) return GamaListFactory.create(Types.NO_TYPE);
 
 		// Next, we compute the species to instantiate
 		final IPopulation pop = super.findPopulation(scope);
@@ -204,11 +204,11 @@ public class GenerateStatement extends CreateStatement {//extends AbstractStatem
 	 * @author kevinchapuis
 	 *
 	 */
-	public static class GenerateValidator implements IDescriptionValidator<StatementDescription> {
+	public static class GenerateValidator implements IDescriptionValidator<IStatementDescription> {
 
 		@SuppressWarnings ({ "unchecked", "rawtypes" })
 		@Override
-		public void validate(final StatementDescription description) {
+		public void validate(final IStatementDescription description) {
 			final IExpression species = description.getFacetExpr(SPECIES);
 			// If the species cannot be determined, issue an error and leave validation
 			if (species == null) {
@@ -216,47 +216,44 @@ public class GenerateStatement extends CreateStatement {//extends AbstractStatem
 				return;
 			}
 
-			final SpeciesDescription sd = species.getGamlType().getDenotedSpecies();
-			if (sd == null) {
+			final ITypeDescription sd = species.getGamlType().getDenotedSpecies();
+			if (!(sd instanceof ISpeciesDescription spec)) {
 				description.error("The species to instantiate cannot be determined", UNKNOWN_SPECIES, SPECIES,
 						species.getName());
 				return;
 			}
 
-			if (species instanceof SpeciesConstantExpression) {
-				final boolean abs = sd.isAbstract();
-				final boolean mir = sd.isMirror();
-				final boolean gri = sd.isGrid();
-				final boolean bui = sd.isBuiltIn();
-				if (abs || mir || gri || bui) {
-					final String p = abs ? "abstract" : mir ? "a mirror" : gri ? "a grid" : bui ? "built-in" : "";
-					description.error(sd.getName() + " is " + p + " and cannot be instantiated", WRONG_TYPE, SPECIES);
+			if (species instanceof IExpression.Species) {
+				final boolean abs = spec.isAbstract();
+				final boolean mir = spec.isMirror();
+				final boolean gri = spec.isGrid();
+				if (abs || mir || gri) {
+					final String p = abs ? "abstract" : mir ? "a mirror" : gri ? "a grid" : "";
+					description.error(spec.getName() + " is " + p + " and cannot be instantiated", WRONG_TYPE, SPECIES);
 					return;
 				}
-			} else if (!(sd instanceof ModelDescription)) {
+			} else if (!(sd instanceof IModelDescription)) {
 				description.info(
 						"The actual species will be determined at runtime. This can lead to errors if it cannot be instantiated",
 						WRONG_TYPE, SPECIES);
 			}
 
-			if (sd instanceof ModelDescription && !(description.getSpeciesContext() instanceof ExperimentDescription)) {
+			final ITypeDescription callerSpecies = description.getTypeContext();
+			if (sd instanceof IModelDescription && !(callerSpecies instanceof IExperimentDescription)) {
 				description.error("Simulations can only be created within experiments", WRONG_CONTEXT, SPECIES);
 				return;
 			}
 
-			final SpeciesDescription callerSpecies = description.getSpeciesContext();
-			final SpeciesDescription macro = sd.getMacroSpecies();
-			if (macro == null) {
+			final ISpeciesDescription macro = spec.getMacroSpecies();
+			if (macro == null && !(sd instanceof IModelDescription)) {
 				description.error("The macro-species of " + species + " cannot be determined");
 				return;
-				// hqnghi special case : create instances of model from
-				// model
+				// hqnghi special case : create instances of model from model
 			}
-			if (macro instanceof ModelDescription && callerSpecies instanceof ModelDescription) {
-
+			if (macro instanceof IModelDescription && callerSpecies instanceof IModelDescription) {
 				// end-hqnghi
-			} else if (callerSpecies != macro && !callerSpecies.hasMacroSpecies(macro)
-					&& !callerSpecies.hasParent(macro)) {
+			} else if (callerSpecies instanceof ISpeciesDescription callerSpeciesDesc && callerSpeciesDesc != macro
+					&& !callerSpeciesDesc.hasMacroSpecies(macro) && !callerSpeciesDesc.hasParent(macro)) {
 				description.error(
 						"No instance of " + macro.getName() + " available for creating instances of " + sd.getName());
 				return;

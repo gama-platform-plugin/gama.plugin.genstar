@@ -3,11 +3,11 @@ package spll.localizer;
 import java.util.List;
 
 import core.metamodel.entity.ADemoEntity;
-import gama.core.metamodel.agent.IAgent;
-import gama.core.metamodel.shape.IShape;
-import gama.core.runtime.IScope;
-import gama.core.util.IContainer;
-import gama.core.util.IList;
+import gama.api.kernel.agent.IAgent;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.IShape;
+import gama.api.types.list.IList;
+import gama.api.types.misc.IContainer;
 import gama.core.util.matrix.GamaField;
 import spll.localizer.constraint.ISpatialConstraint;
 import spll.localizer.distribution.ISpatialDistribution;

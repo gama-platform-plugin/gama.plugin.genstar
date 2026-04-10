@@ -1,8 +1,8 @@
 package spll.localizer.constraint;
 
 
-import gama.core.metamodel.shape.IShape;
-import gama.core.util.IList;
+import gama.api.types.geometry.IShape;
+import gama.api.types.list.IList;
 
 /**
  * Abstract numerical representation of a spatial constraint: it deals with priority (int) 

@@ -15,9 +15,9 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 
 import espacedev.gaml.extensions.genstar.utils.GenStarConstant.SpatialConstraint;
-import gama.core.metamodel.shape.IShape;
-import gama.core.runtime.IScope;
-import gama.core.util.IList;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.IShape;
+import gama.api.types.list.IList;
 import spll.localizer.constraint.ISpatialConstraint;
 import spll.localizer.constraint.SpatialConstraintMaxDensity;
 import spll.localizer.constraint.SpatialConstraintMaxDistance;

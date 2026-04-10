@@ -1,10 +1,10 @@
 package spll.localizer.pointInalgo;
 
-import gama.core.metamodel.shape.GamaPoint;
-import gama.core.metamodel.shape.IShape;
-import gama.core.runtime.IScope;
-import gama.core.util.GamaListFactory;
-import gama.core.util.IList;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.GamaPoint;
+import gama.api.types.geometry.IShape;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
 import gama.gaml.operators.spatial.SpatialPunctal;
 
 public class RandomPointInLocalizer implements PointInLocalizer{
@@ -12,7 +12,7 @@ public class RandomPointInLocalizer implements PointInLocalizer{
 	
 	@Override
 	public GamaPoint pointIn(IScope scope, IShape geom) {
-		return SpatialPunctal.any_location_in(scope, geom);
+		return (GamaPoint) SpatialPunctal.any_location_in(scope, geom);
 	
 		
 	}

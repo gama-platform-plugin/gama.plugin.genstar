@@ -12,7 +12,7 @@ package spll.localizer.distribution.function;
 
 import java.util.function.Function;
 
-import gama.core.metamodel.shape.IShape;
+import gama.api.types.geometry.IShape;
 
 /**
  *

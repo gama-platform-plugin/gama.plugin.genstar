@@ -2,10 +2,10 @@ package spll.localizer.distribution;
 
 import java.util.Collection;
 
-import gama.core.metamodel.agent.IAgent;
-import gama.core.metamodel.shape.IShape;
-import gama.core.runtime.IScope;
-import gama.core.util.IList;
+import gama.api.kernel.agent.IAgent;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.IShape;
+import gama.api.types.list.IList;
 import spll.localizer.constraint.SpatialConstraintMaxNumber;
 import spll.localizer.distribution.function.AreaFunction;
 import spll.localizer.distribution.function.CapacityFunction;

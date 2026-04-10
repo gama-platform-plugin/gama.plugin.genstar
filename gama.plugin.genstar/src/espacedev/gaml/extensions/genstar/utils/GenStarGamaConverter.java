@@ -9,16 +9,16 @@ import core.metamodel.attribute.AttributeFactory;
 import core.metamodel.value.IValue;
 import core.util.data.GSEnumDataType;
 import core.util.exception.GSIllegalRangedData;
+import gama.annotations.constants.IKeyword;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
+import gama.api.kernel.agent.IAgent;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
+import gama.api.compilation.descriptions.ITypeDescription;
+import gama.api.compilation.descriptions.IVariableDescription;
 import gospl.GosplEntity;
-import gama.core.common.interfaces.IKeyword;
-import gama.core.metamodel.agent.IAgent;
-import gama.core.runtime.IScope;
-import gama.core.util.GamaListFactory;
-import gama.core.util.IList;
-import gama.gaml.descriptions.SpeciesDescription;
-import gama.gaml.descriptions.VariableDescription;
-import gama.gaml.types.IType;
-import gama.gaml.types.Types;
 /**
  * 
  * Meant to be a class with utils methods to convert Genstar object into Gama object
@@ -43,12 +43,12 @@ public class GenStarGamaConverter {
 		
 		final Set<String> NON_SAVEABLE_ATTRIBUTE_NAMES = new HashSet<>(Arrays.asList(IKeyword.PEERS,
 				IKeyword.LOCATION, IKeyword.HOST, IKeyword.AGENTS, IKeyword.MEMBERS, IKeyword.SHAPE));
-		final SpeciesDescription species = agents.getGamlType().getContentType().getSpecies();
-		
-		for (VariableDescription vd : species.getAttributes()) {
+		final ITypeDescription species = agents.getGamlType().getContentType().getSpecies();
+
+		for (IVariableDescription vd : species.getAttributes()) {
 			if (NON_SAVEABLE_ATTRIBUTE_NAMES.contains(vd.getName())) { continue; }
-			Attribute<? extends IValue> att = gaf.createAttribute(vd.getName(), getType(vd.getGamlType()), 
-					agents.stream(scope).map(a -> a.getDirectVarValue(scope, vd.getName()).toString()).toList());
+			Attribute<? extends IValue> att = gaf.createAttribute(vd.getName(), getType(vd.getGamlType()),
+					agents.stream(scope).map((IAgent a) -> a.getDirectVarValue(scope, vd.getName()).toString()).toList());
 			mySet.add(att);
 		}
 		

@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 import espacedev.gaml.extensions.genstar.statement.GenerateStatement;
-import gama.core.runtime.IScope;
-import gama.gaml.statements.Arguments;
-import gama.gaml.types.IType;
+import gama.api.gaml.symbols.Arguments;
+import gama.api.gaml.types.IType;
+import gama.api.runtime.scope.IScope;
 /**
  *
  * Interface called by the GenerateStatement to build a synthetic population based on a given Source of information

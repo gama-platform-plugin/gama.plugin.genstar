@@ -33,17 +33,17 @@ import core.util.exception.GSIllegalRangedData;
 import core.util.random.GenstarRandom;
 import espacedev.gaml.extensions.genstar.statement.GenerateStatement;
 import espacedev.gaml.extensions.genstar.utils.GenStarGamaUtils;
-import gama.core.metamodel.agent.IAgent;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.GamaMapFactory;
-import gama.core.util.IList;
-import gama.core.util.IMap;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.symbols.Arguments;
+import gama.api.gaml.symbols.IVariable;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
+import gama.api.kernel.agent.IAgent;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.list.IList;
+import gama.api.types.map.GamaMapFactory;
+import gama.api.types.map.IMap;
 import gama.core.util.file.GamaCSVFile;
-import gama.gaml.statements.Arguments;
-import gama.gaml.types.IType;
-import gama.gaml.types.Types;
-import gama.gaml.variables.IVariable;
 import gospl.GosplPopulation;
 import gospl.algo.IGosplConcept.EGosplAlgorithm;
 import gospl.algo.sr.ds.DirectSamplingAlgo;
@@ -109,8 +109,8 @@ public class FileBasedGenerator implements IGenstarGenerator {
 			final Object source, final Object attributes, final Object algo, final Arguments init,
 			final GenerateStatement generateStatement) {
 		IAgent executor = scope.getAgent();
-		gama.core.metamodel.population.IPopulation<? extends IAgent> gamaPop =
-				executor.getPopulationFor(generateStatement.getDescription().getSpeciesContext().getName());
+		gama.api.kernel.agent.IPopulation<? extends IAgent> gamaPop =
+				executor.getPopulationFor(generateStatement.getDescription().getTypeContext().getName());
 
 		// --------
 		// 1. Infer the type of data for each attributes (based on gaml type and values given)

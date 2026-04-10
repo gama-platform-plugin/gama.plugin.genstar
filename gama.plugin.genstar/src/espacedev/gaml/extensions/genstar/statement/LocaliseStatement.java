@@ -1,46 +1,44 @@
 package espacedev.gaml.extensions.genstar.statement;
 
-import static gama.annotations.precompiler.ISymbolKind.SEQUENCE_STATEMENT;
-import static gama.core.common.interfaces.IKeyword.SPECIES;
-
 import espacedev.gaml.extensions.genstar.localisation.IGenstarLocaliser;
 import espacedev.gaml.extensions.genstar.statement.LocaliseStatement.LocaliseValidator;
 import espacedev.gaml.extensions.genstar.utils.GenStarConstant;
 import espacedev.gaml.extensions.genstar.utils.GenStarGamaUtils;
-import gama.annotations.precompiler.GamlAnnotations.doc;
-import gama.annotations.precompiler.GamlAnnotations.example;
-import gama.annotations.precompiler.GamlAnnotations.facet;
-import gama.annotations.precompiler.GamlAnnotations.facets;
-import gama.annotations.precompiler.GamlAnnotations.inside;
-import gama.annotations.precompiler.GamlAnnotations.symbol;
-import gama.annotations.precompiler.GamlAnnotations.usage;
-import gama.annotations.precompiler.IConcept;
-import gama.annotations.precompiler.IOperatorCategory;
-import gama.annotations.precompiler.ISymbolKind;
-import gama.core.common.interfaces.IKeyword;
-import gama.core.metamodel.agent.IAgent;
-import gama.core.metamodel.population.IPopulation;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.GamaListFactory;
-import gama.core.util.IContainer;
-import gama.core.util.IList;
-import gama.gaml.compilation.IDescriptionValidator;
-import gama.gaml.compilation.annotations.validator;
-import gama.gaml.descriptions.IDescription;
-import gama.gaml.descriptions.StatementDescription;
-import gama.gaml.expressions.IExpression;
-import gama.gaml.operators.Cast;
-import gama.gaml.species.ISpecies;
-import gama.gaml.statements.AbstractStatementSequence;
-import gama.gaml.statements.Arguments;
-import gama.gaml.statements.IStatement.WithArgs;
+import gama.annotations.doc;
+import gama.annotations.example;
+import gama.annotations.facet;
+import gama.annotations.facets;
+import gama.annotations.inside;
+import gama.annotations.symbol;
+import gama.annotations.usage;
+import gama.annotations.constants.IKeyword;
+import gama.annotations.support.IConcept;
+import gama.annotations.support.IOperatorCategory;
+import gama.annotations.support.ISymbolKind;
+import gama.api.annotations.validator;
+import gama.api.compilation.descriptions.IDescription;
+import gama.api.compilation.descriptions.IDescriptionValidator;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.expressions.IExpression;
+import gama.api.gaml.statements.AbstractStatementSequence;
+import gama.api.gaml.statements.IStatement.WithArgs;
+import gama.api.gaml.symbols.Arguments;
+import gama.api.gaml.types.Cast;
+import gama.api.gaml.types.Types;
+import gama.api.gaml.types.IType;
+import gama.api.kernel.agent.IAgent;
+import gama.api.kernel.agent.IPopulation;
+import gama.api.kernel.species.ISpecies;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
+import gama.api.types.misc.IContainer;
+import gama.api.compilation.descriptions.IStatementDescription;
 import gama.gaml.statements.RemoteSequence;
-import gama.gaml.types.IType;
 
 @symbol (
 		name = GenStarConstant.GSLOCALISE,
-		kind = SEQUENCE_STATEMENT,
+		kind = ISymbolKind.SEQUENCE_STATEMENT,
 		with_sequence = true,
 		breakable = true,
 		continuable = true,
@@ -49,10 +47,10 @@ import gama.gaml.types.IType;
 		concept = { IConcept.AGENT_LOCATION, IConcept.SPECIES },
 		remote_context = true)
 @inside (
-		kinds = { ISymbolKind.BEHAVIOR,  SEQUENCE_STATEMENT })
+		kinds = { ISymbolKind.BEHAVIOR, ISymbolKind.SEQUENCE_STATEMENT })
 @facets (
 		value = { @facet (
-						name = SPECIES,
+						name = IKeyword.SPECIES,
 						type = { IType.SPECIES, IType.AGENT, IType.CONTAINER },
 						optional = false,
 						doc = @doc ("The species of the agents to be localised.")),
@@ -247,7 +245,7 @@ public class LocaliseStatement extends AbstractStatementSequence implements With
 			pop = GamaListFactory.create();
 			((IList) pop).add(ag);
 		} else {
-			pop = Cast.asList(scope, obj);
+			pop = (IList) Types.LIST.cast(scope, obj, null, false);
 		}
 		/*ISpecies s = Cast.asSpecies(scope, species.value(scope));
 		if (s == null) {// A last attempt in order to fix #2466
@@ -319,10 +317,10 @@ public class LocaliseStatement extends AbstractStatementSequence implements With
 
 
 
-	public static class LocaliseValidator implements IDescriptionValidator<StatementDescription> {
+	public static class LocaliseValidator implements IDescriptionValidator<IStatementDescription> {
 
 		@Override
-		public void validate(StatementDescription description) {
+		public void validate(IStatementDescription description) {
 			
 			// ****** 
 			// Minimal check on species - not taking into account all the specific cases copy/past from CreateStatement 

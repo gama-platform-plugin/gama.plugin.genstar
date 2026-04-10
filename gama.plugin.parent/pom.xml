@@ -11,7 +11,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <wagon.version>3.5.3</wagon.version>
     <!-- Both overridden at build time via -D flags derived from the branch name -->
-    <gama.p2.version>2026.6</gama.p2.version>
+    <gama.p2.version>2026-06</gama.p2.version>
     <!-- Overridden at build time via -Ddeploy.subdir (= GitHub repo name) -->
     <deploy.subdir>UNKNOWN_PLUGIN</deploy.subdir>
     <eclipse.p2.version>2026-03</eclipse.p2.version>
@@ -29,18 +29,13 @@
       <url>https://updates.gama-platform.org/${gama.p2.version}</url>
       <layout>p2</layout>
     </repository>
-    <!-- GAMA Maven artifacts — only needed for the annotation processor JARs below -->
     <repository>
       <id>eclipse-swt</id>
       <url>https://download.eclipse.org/releases/${eclipse.p2.version}</url>
       <layout>p2</layout>
     </repository>
   </repositories>
-  <!--
-        Only the annotation processor JARs need to be Maven dependencies.
-        All other GAMA bundle dependencies (gama.core, gama.ui.*, etc.) are
-        declared in each plugin's MANIFEST.MF and resolved from the p2 repo above.
-    -->
+  
   <build>
     <extensions>
       <!-- wagon-ssh pulls in wagon-ssh-common and wagon-ssh-external transitively -->

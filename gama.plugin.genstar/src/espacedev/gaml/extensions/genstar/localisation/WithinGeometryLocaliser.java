@@ -3,14 +3,14 @@ package espacedev.gaml.extensions.genstar.localisation;
 import java.util.Map;
 
 import espacedev.gaml.extensions.genstar.statement.LocaliseStatement;
-import gama.core.metamodel.agent.IAgent;
-import gama.core.metamodel.shape.IShape;
-import gama.core.runtime.IScope;
-import gama.core.util.IContainer;
-import gama.core.util.IList;
+import gama.api.gaml.types.Cast;
+import gama.api.gaml.types.Types;
+import gama.api.kernel.agent.IAgent;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.IShape;
+import gama.api.types.list.IList;
+import gama.api.types.misc.IContainer;
 import gama.core.util.matrix.GamaField;
-import gama.gaml.operators.Cast;
-import gama.gaml.types.Types;
 import spll.localizer.SPLocalizer;
 import spll.localizer.constraint.ASpatialConstraint;
 import spll.localizer.constraint.SpatialConstraintLocalization;
@@ -35,18 +35,18 @@ public class WithinGeometryLocaliser implements IGenstarLocaliser {
 	@Override
 	public void localise(IScope scope, final IContainer<?, IAgent> pop, Object nests, LocaliseStatement locStatement) {
 		String nestAtt = locStatement.getNestAttribute() != null ? Cast.asString(scope, locStatement.getNestAttribute().value(scope)) : null;
-		IList<IShape> nestList = Cast.asList(scope, nests).listValue(scope, Types.GEOMETRY, false);
+		IList<IShape> nestList = ((IList<IShape>) Types.LIST.cast(scope, nests, null, false)).listValue(scope, Types.GEOMETRY, false);
 		Double maxValLocCst = locStatement.getMaxDistLocCst() != null? Cast.asFloat(scope, locStatement.getMaxDistLocCst().value(scope)) : null; 
 		Double stepValLocCst = locStatement.getStepDistLocCst() != null? Cast.asFloat(scope, locStatement.getStepDistLocCst().value(scope)) : null; 
 		
 		SPLocalizer loc = new SPLocalizer(scope, nestList, nestAtt,maxValLocCst,stepValLocCst);
-		Map matcherMap =  (locStatement.getMatcher() != null) ? Cast.asMap(scope, locStatement.getMatcher().value(scope), false) : null;
-		if (matcherMap != null) 
-			loc.setMatcher(Cast.asList(scope, matcherMap.get("entities")),Cast.asString(scope, matcherMap.get("pop_id")),  Cast.asString(scope, matcherMap.get("data_id")));
-	
-		Map mapperMap =  (locStatement.getMapper() != null) ? Cast.asMap(scope, locStatement.getMapper().value(scope), false) : null;
+		Map matcherMap =  (locStatement.getMatcher() != null) ? (Map) Types.MAP.cast(scope, locStatement.getMatcher().value(scope), null, false) : null;
+		if (matcherMap != null)
+			loc.setMatcher((IList) Types.LIST.cast(scope, matcherMap.get("entities"), null, false),Cast.asString(scope, matcherMap.get("pop_id")),  Cast.asString(scope, matcherMap.get("data_id")));
+
+		Map mapperMap =  (locStatement.getMapper() != null) ? (Map) Types.MAP.cast(scope, locStatement.getMapper().value(scope), null, false) : null;
 		if (mapperMap != null) {
-			IList<IShape> entities = mapperMap.containsKey("entities") ? Cast.asList(scope, mapperMap.get("entities")) : null;
+			IList<IShape> entities = mapperMap.containsKey("entities") ? (IList<IShape>) Types.LIST.cast(scope, mapperMap.get("entities"), null, false) : null;
 			String dataId = mapperMap.containsKey("data_id") ? Cast.asString(scope, mapperMap.get("data_id")) : null; 
 					
 			loc.setMapper(entities,dataId,
@@ -76,10 +76,10 @@ public class WithinGeometryLocaliser implements IGenstarLocaliser {
 		}
 		
 		if (locStatement.getConstraints() != null) {
-			IList constraints = Cast.asList(scope, loc.getConstraints());
+			IList constraints = (IList) Types.LIST.cast(scope, loc.getConstraints(), null, false);
 			if (constraints != null && !constraints.isEmpty()) {
 				for (Object el : constraints) {
-					Map m = Cast.asMap(scope, el, false);
+					Map m = (Map) Types.MAP.cast(scope, el, null, false);
 					if (m == null) continue;
 					String type = (String) m.get("type");
 					if (type == null) continue;

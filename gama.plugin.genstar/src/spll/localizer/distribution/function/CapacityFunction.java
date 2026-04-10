@@ -1,6 +1,6 @@
 package spll.localizer.distribution.function;
 
-import gama.core.metamodel.shape.IShape;
+import gama.api.types.geometry.IShape;
 import spll.localizer.constraint.SpatialConstraintMaxNumber;
 
 public class CapacityFunction implements ISpatialEntityFunction<Integer> {

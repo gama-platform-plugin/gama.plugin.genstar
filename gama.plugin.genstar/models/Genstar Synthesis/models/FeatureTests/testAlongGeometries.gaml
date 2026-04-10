@@ -2,8 +2,8 @@
 model Localization
 
 global {
-	float min_dist <- 1.0 min: 0.0 max: 50.0 parameter: true;
-	float max_dist <- 5.0 min: 0.0 max: 100.0 parameter: true;
+	float min_dist <- 1.0 min: 0.0 max: 50.0;
+	float max_dist <- 5.0 min: 0.0 max: 100.0;
 	
 	list<geometry> nests;
 	init {
@@ -31,6 +31,9 @@ species people {
 }
 
 experiment Localization type: gui {
+	parameter var: min_dist;
+	parameter var: max_dist;
+	
 	output {
 		display map {
 			graphics "nests" {

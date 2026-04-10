@@ -11,11 +11,12 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import gama.core.metamodel.agent.IAgent;
-import gama.core.metamodel.shape.IShape;
-import gama.core.runtime.IScope;
-import gama.core.util.GamaListFactory;
-import gama.core.util.IList;
+import gama.api.kernel.agent.IAgent;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.IShape;
+import gama.api.gaml.types.Types;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
 import spll.localizer.constraint.ISpatialConstraint;
 import spll.localizer.distribution.ISpatialDistribution;
 
@@ -119,7 +120,7 @@ public class SPLinker implements ISPLinker<IShape> {
 					return newFilteredCandidates;
 				}
 			} while(scs.stream().noneMatch(c -> !c.isConstraintLimitReach()));
-			return GamaListFactory.EMPTY_LIST;
+			return GamaListFactory.create(Types.GEOMETRY);
 		default:
 			for(ISpatialConstraint sc : scs) {
 				IList<IShape> newFilteredCandidates = sc.getCandidates(scope, filteredCandidates);
@@ -131,7 +132,7 @@ public class SPLinker implements ISPLinker<IShape> {
 							!sc.isConstraintLimitReach());
 				}
 				if(newFilteredCandidates.isEmpty())
-					return GamaListFactory.EMPTY_LIST;
+					return GamaListFactory.create(Types.GEOMETRY);
 				filteredCandidates = newFilteredCandidates;
 			}
 			return filteredCandidates;

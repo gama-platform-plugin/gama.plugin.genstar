@@ -12,7 +12,6 @@
 package espacedev.gaml.extensions.genstar.type;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,28 +27,23 @@ import core.metamodel.io.GSSurveyWrapper;
 import espacedev.gaml.extensions.genstar.utils.GenStarConstant.GenerationAlgorithm;
 import espacedev.gaml.extensions.genstar.utils.GenStarConstant.SpatialDistribution;
 import espacedev.gaml.extensions.genstar.utils.GenStarGamaConstraintBuilder;
-import gama.core.common.interfaces.IValue;
-import gama.core.metamodel.agent.IAgent;
-import gama.annotations.precompiler.GamlAnnotations.doc;
-import gama.annotations.precompiler.GamlAnnotations.getter;
-import gama.annotations.precompiler.GamlAnnotations.setter;
-import gama.annotations.precompiler.GamlAnnotations.variable;
-import gama.annotations.precompiler.GamlAnnotations.vars;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.GamaListFactory;
-import gama.core.util.IContainer;
-import gama.core.util.IList;
-import gama.core.util.file.json.Json;
-import gama.core.util.file.json.JsonValue;
-import gama.gaml.operators.Strings;
-import gama.gaml.types.IType;
-import gama.gaml.types.Types;
-import spll.localizer.constraint.ISpatialConstraint;
-import spll.localizer.constraint.SpatialConstraintMaxDensity;
-import spll.localizer.constraint.SpatialConstraintMaxNumber;
-import spll.localizer.distribution.ISpatialDistribution;
-import spll.localizer.distribution.SpatialDistributionFactory;
+import gama.annotations.doc;
+import gama.annotations.getter;
+import gama.annotations.setter;
+import gama.annotations.variable;
+import gama.annotations.vars;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
+import gama.api.kernel.agent.IAgent;
+import gama.api.runtime.scope.IScope;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
+import gama.api.types.list.GamaListFactory;
+import gama.api.types.list.IList;
+import gama.api.types.misc.IContainer;
+import gama.api.types.misc.IValue;
+import gama.api.utils.json.IJson;
+import gama.api.utils.json.IJsonValue;
 
 /**
  * The Class GamaPopGenerator.
@@ -246,9 +240,13 @@ public class GamaPopGenerator implements IValue {
 
 
 	@Override
-	public JsonValue serializeToJson(Json json) {
-		// TODO Auto-generated method stub
+	public IJsonValue serializeToJson(final IJson json) {
 		return null;
+	}
+
+	@Override
+	public IType<?> getGamlType() {
+		return Types.get(GamaPopGeneratorType.GENERATOR_TYPE_ID);
 	}
 
 	@Override

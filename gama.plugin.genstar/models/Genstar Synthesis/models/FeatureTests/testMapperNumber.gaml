@@ -3,7 +3,7 @@
 model Localization
 
 global {
-	bool field_number_mapper <- true parameter: true;
+	bool field_number_mapper <- true;
 	field field_from_matrix;
 	
 	init {
@@ -54,6 +54,7 @@ species people {
 }
 
 experiment Localization type: gui {
+	parameter var:field_number_mapper;
 	output {
 		display map {
 			graphics "field" {

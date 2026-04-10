@@ -19,7 +19,7 @@ import core.metamodel.IPopulation;
 import core.metamodel.attribute.Attribute;
 import core.metamodel.entity.ADemoEntity;
 import core.metamodel.value.IValue;
-import gama.core.runtime.exceptions.GamaRuntimeException;
+import gama.api.exceptions.GamaRuntimeException;
 
 /**
  * A subpopulation is a view of an actual multitypePopulation. Any change to this subpopulation is reflected to the

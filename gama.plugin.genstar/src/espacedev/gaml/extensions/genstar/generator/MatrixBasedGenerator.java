@@ -20,20 +20,21 @@ import java.util.stream.Collectors;
 import com.google.common.base.Functions;
 
 import espacedev.gaml.extensions.genstar.statement.GenerateStatement;
-import gama.core.metamodel.agent.IAgent;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.GamaMapFactory;
-import gama.core.util.IList;
-import gama.core.util.IMap;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.symbols.Arguments;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
+import gama.api.kernel.agent.IAgent;
+import gama.api.kernel.agent.IPopulation;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.list.IList;
+import gama.api.types.map.GamaMapFactory;
+import gama.api.types.map.IMap;
+import gama.api.types.matrix.IMatrix;
 import gama.core.util.matrix.GamaFloatMatrix;
 import gama.core.util.matrix.GamaIntMatrix;
-import gama.core.util.matrix.IMatrix;
 import gama.gaml.operators.Maths;
 import gama.gaml.operators.Random;
-import gama.gaml.statements.Arguments;
-import gama.gaml.types.IType;
-import gama.gaml.types.Types;
 
 
 /**
@@ -82,8 +83,8 @@ public class MatrixBasedGenerator implements IGenstarGenerator {
 			final GenerateStatement generateStatement) {
 
 		IAgent executor = scope.getAgent();
-		gama.core.metamodel.population.IPopulation<? extends IAgent> gamaPop =
-				executor.getPopulationFor(generateStatement.getDescription().getSpeciesContext().getName());
+		IPopulation<? extends IAgent> gamaPop =
+				executor.getPopulationFor(generateStatement.getDescription().getTypeContext().getName());
 
 		IMap<String, IList<String>> atts = (IMap<String, IList<String>>) attributes;
 		GamaFloatMatrix mat = GamaFloatMatrix.from(scope, (IMatrix) source);

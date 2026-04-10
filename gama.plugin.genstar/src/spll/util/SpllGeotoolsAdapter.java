@@ -2,12 +2,12 @@ package spll.util;
 
 import java.util.Set;
 
+import org.geotools.api.feature.Property;
+import org.geotools.api.feature.simple.SimpleFeatureType;
+import org.geotools.api.feature.type.GeometryDescriptor;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.feature.type.BasicFeatureTypes;
-import org.opengis.feature.Property;
-import org.opengis.feature.simple.SimpleFeatureType;
-import org.opengis.feature.type.GeometryDescriptor;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import core.metamodel.attribute.Attribute;
 import core.metamodel.attribute.AttributeFactory;

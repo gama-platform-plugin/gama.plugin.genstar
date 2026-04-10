@@ -18,7 +18,6 @@ import java.util.Map;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import core.configuration.GenstarConfigurationFile;
-import core.metamodel.IPopulation;
 import core.metamodel.attribute.Attribute;
 import core.metamodel.entity.ADemoEntity;
 import core.metamodel.value.IValue;
@@ -26,6 +25,14 @@ import core.util.random.GenstarRandom;
 import espacedev.gaml.extensions.genstar.statement.GenerateStatement;
 import espacedev.gaml.extensions.genstar.type.GamaPopGenerator;
 import espacedev.gaml.extensions.genstar.utils.GenStarGamaUtils;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.symbols.Arguments;
+import gama.api.gaml.symbols.IVariable;
+import gama.api.gaml.types.IType;
+import gama.api.kernel.agent.IAgent;
+import gama.api.kernel.agent.IPopulation;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.map.GamaMapFactory;
 import gospl.GosplPopulation;
 import gospl.algo.IGosplConcept.EGosplAlgorithm;
 import gospl.algo.sr.ds.DirectSamplingAlgo;
@@ -38,13 +45,6 @@ import gospl.generator.DistributionBasedGenerator;
 import gospl.io.exception.InvalidSurveyFormatException;
 import gospl.sampler.ISampler;
 import gospl.sampler.sr.GosplBasicSampler;
-import gama.core.metamodel.agent.IAgent;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.GamaMapFactory;
-import gama.gaml.statements.Arguments;
-import gama.gaml.types.IType;
-import gama.gaml.variables.IVariable;
 
 /**
  * The Class OldGenstarGenerator.
@@ -89,8 +89,8 @@ public class OldGenstarGenerator implements IGenstarGenerator {
 			final Object source, final Object attributes, final Object algo, final Arguments init,
 			final GenerateStatement generateStatement) {
 		IAgent executor = scope.getAgent();
-		gama.core.metamodel.population.IPopulation<? extends IAgent> gamaPop =
-				executor.getPopulationFor(generateStatement.getDescription().getSpeciesContext().getName());
+		IPopulation<? extends IAgent> gamaPop =
+				executor.getPopulationFor(generateStatement.getDescription().getTypeContext().getName());
 
 		// Main object of the generation process
 		GamaPopGenerator gen = (GamaPopGenerator) source;
@@ -112,7 +112,7 @@ public class OldGenstarGenerator implements IGenstarGenerator {
 		////////////////////////////////////////////////////////////////////////
 
 		// Create a basic empty Genstar population
-		IPopulation<ADemoEntity, Attribute<? extends IValue>> population = new GosplPopulation();
+		core.metamodel.IPopulation<ADemoEntity, Attribute<? extends IValue>> population = new GosplPopulation();
 
 		GosplInputDataManager gdb = new GosplInputDataManager(confFile);
 

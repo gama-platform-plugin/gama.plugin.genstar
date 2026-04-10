@@ -22,16 +22,16 @@ import espacedev.gaml.extensions.genstar.type.GamaPopGenerator;
 import espacedev.gaml.extensions.genstar.utils.GenStarConstant;
 import espacedev.gaml.extensions.genstar.utils.GenStarConstant.GenerationAlgorithm;
 import espacedev.gaml.extensions.genstar.utils.GenStarGamaUtils;
-import gama.annotations.precompiler.GamlAnnotations.doc;
-import gama.annotations.precompiler.GamlAnnotations.example;
-import gama.annotations.precompiler.GamlAnnotations.no_test;
-import gama.annotations.precompiler.GamlAnnotations.operator;
-import gama.core.common.util.FileUtils;
-import gama.core.runtime.IScope;
-import gama.core.runtime.exceptions.GamaRuntimeException;
-import gama.core.util.GamaMap;
-import gama.core.util.IList;
-import gama.gaml.types.IType;
+import gama.annotations.doc;
+import gama.annotations.example;
+import gama.annotations.no_test;
+import gama.annotations.operator;
+import gama.api.exceptions.GamaRuntimeException;
+import gama.api.gaml.types.IType;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.list.IList;
+import gama.api.types.map.GamaMap;
+import gama.api.utils.files.FileUtils;
 
 /**
  * The Class GenstarAdderOperators.

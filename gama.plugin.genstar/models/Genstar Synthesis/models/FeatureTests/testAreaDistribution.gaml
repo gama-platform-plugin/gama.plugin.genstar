@@ -2,7 +2,7 @@
 model Localization
 
 global {
-	bool area_distribution <- true parameter: true;
+	bool area_distribution <- true;
 	init {
 		create building with: (shape: square(10) at_location {10,50});
 		create building with: (shape: square(40) at_location {60,50});
@@ -35,6 +35,8 @@ species people {
 }
 
 experiment Localization type: gui {
+	parameter var: area_distribution;
+	
 	output {
 		display map {
 			species building;

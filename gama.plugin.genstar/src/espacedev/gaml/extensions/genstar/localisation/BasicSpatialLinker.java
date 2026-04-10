@@ -3,13 +3,13 @@ package espacedev.gaml.extensions.genstar.localisation;
 import java.util.Map;
 
 import espacedev.gaml.extensions.genstar.statement.SpatialLinkerStatement;
-import gama.core.metamodel.agent.IAgent;
-import gama.core.metamodel.shape.IShape;
-import gama.core.runtime.IScope;
-import gama.core.util.IContainer;
-import gama.core.util.IList;
-import gama.gaml.operators.Cast;
-import gama.gaml.types.Types;
+import gama.api.gaml.types.Cast;
+import gama.api.gaml.types.Types;
+import gama.api.kernel.agent.IAgent;
+import gama.api.runtime.scope.IScope;
+import gama.api.types.geometry.IShape;
+import gama.api.types.list.IList;
+import gama.api.types.misc.IContainer;
 import spll.localizer.distribution.ISpatialDistribution;
 import spll.localizer.distribution.SpatialDistributionFactory;
 import spll.localizer.linker.SPLinker;
@@ -30,8 +30,8 @@ public class BasicSpatialLinker implements IGenstarLinker {
 	@Override
 	public void link(IScope scope, IContainer<?, IAgent> pop, IContainer<?, IShape> candidates, SpatialLinkerStatement linkStatement) {
 		String nestAtt = linkStatement.getNestAttribute() != null ? Cast.asString(scope, linkStatement.getNestAttribute().value(scope)) : null;
-		IList<IShape> nestList = Cast.asList(scope, candidates).listValue(scope, Types.GEOMETRY, false); 
-		Map parameters = linkStatement.getParameters() != null ? Cast.asMap(scope, linkStatement.getParameters().value(scope), false) : null;
+		IList<IShape> nestList = ((IList<IShape>) Types.LIST.cast(scope, candidates, null, false)).listValue(scope, Types.GEOMETRY, false);
+		Map parameters = linkStatement.getParameters() != null ? (Map) Types.MAP.cast(scope, linkStatement.getParameters().value(scope), null, false) : null;
 		ISpatialDistribution<IShape> distribution = null;
 			
 		String di = linkStatement.getDistribution() != null ? 

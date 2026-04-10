@@ -20,13 +20,13 @@ import java.util.Optional;
 
 import core.metamodel.attribute.Attribute;
 import core.metamodel.value.IValue;
-import gama.core.common.util.FileUtils;
-import gama.core.runtime.IScope;
+import gama.api.gaml.types.IType;
+import gama.api.gaml.types.Types;
+import gama.api.runtime.scope.IScope;
+import gama.api.utils.csv.CsvReader;
+import gama.api.utils.files.FileUtils;
+import gama.core.util.file.CSVInfo;
 import gama.core.util.file.GamaCSVFile;
-import gama.core.util.file.GamaCSVFile.CSVInfo;
-import gama.core.util.file.csv.CsvReader;
-import gama.gaml.types.IType;
-import gama.gaml.types.Types;
 import gama.dev.DEBUG;
 import gama.dev.STRINGS;
 

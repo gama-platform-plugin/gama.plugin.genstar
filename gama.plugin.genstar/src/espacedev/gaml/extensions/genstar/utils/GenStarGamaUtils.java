@@ -34,10 +34,10 @@ import espacedev.gaml.extensions.genstar.type.GamaRangeType;
 import espacedev.gaml.extensions.genstar.utils.GenStarConstant.GenerationAlgorithm;
 import espacedev.gaml.extensions.genstar.utils.GenStarConstant.InputDataType;
 import espacedev.gaml.extensions.genstar.utils.GenStarConstant.SpatialDistribution;
-import gospl.algo.IGosplConcept;
-import gama.core.runtime.IScope;
+import gama.api.gaml.types.IType;
+import gama.api.runtime.scope.IScope;
 import gama.core.util.file.GamaCSVFile;
-import gama.gaml.types.IType;
+import gospl.algo.IGosplConcept;
 
 /**
  * The Class GenStarGamaUtils.
